@@ -5,10 +5,12 @@ After=network.target
 [Service]
 Environment=RTP2FILE_CONFIG_PATH=/etc/rtp2file/config.yaml
 WorkingDirectory=/usr/bin
-ExecStart=/usr/bin/python3 main.py
+ExecStart=/usr/bin/python3 rtp2file.py
 ExecStop=/bin/kill -9 $MAINPID
+User=rtp2file
+Group=rtp2file
 ProtectSystem=strict
-ReadWritePaths=/tmp
+ReadWritePaths=/mnt/
 ReadOnlyPaths=/usr/bin
 PrivateDevices=true
 PrivateTmp=true
