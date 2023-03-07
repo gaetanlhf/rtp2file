@@ -32,19 +32,22 @@ while True:
             date = time.strftime("%Y%m%d-%H%M%S")
             print("Creating a backup of a stream that started on %s" % date)
             process = subprocess.Popen(
-                config["pipeline"].format(
+                config["pipeline"]
+                .format(
                     port1=config["video_port"],
                     port2=config["audio_port"],
                     path=config["save_path"],
                     date=date,
-                ),
-                shell=True,
+                )
+                .split(),
                 stdout=subprocess.PIPE,
+                preexec_fn=os.setsid,
             )
             while process.poll() is None:
                 output = process.stdout.readline()
                 if "GstUDPSrcTimeout" in output.decode("UTF-8"):
-                    process.send_signal(signal.SIGINT)
+                    time.sleep(2)
+                    os.killpg(os.getpgid(process.pid), signal.SIGINT)
                     process.wait()
                     print(
                         "End of the creation of a backup of a stream that started on %s"
