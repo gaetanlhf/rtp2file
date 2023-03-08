@@ -21,8 +21,8 @@ while True:
     try:
         video_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         audio_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        video_socket.timeout(2)
-        audio_socket.timeout(2)
+        video_socket.settimeout(2)
+        audio_socket.settimeout(2)
         video_socket.bind((config["ip"], config["video_port"]))
         audio_socket.bind((config["ip"], config["audio_port"]))
         video_data, _ = video_socket.recvfrom(1)
