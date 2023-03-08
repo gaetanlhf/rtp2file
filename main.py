@@ -19,14 +19,16 @@ print("GStreamer pipeline: %s" % config["pipeline"])
 
 while True:
     try:
-        video = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        audio = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        video.bind((config["ip"], config["video_port"]))
-        audio.bind((config["ip"], config["audio_port"]))
-        video_data, _ = video.recvfrom(1)
-        audio_data, _ = audio.recvfrom(1)
-        video.close()
-        audio.close()
+        video_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        audio_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        video_socket.timeout(2)
+        audio_socket.timeout(2)
+        video_socket.bind((config["ip"], config["video_port"]))
+        audio_socket.bind((config["ip"], config["audio_port"]))
+        video_data, _ = video_socket.recvfrom(1)
+        audio_data, _ = audio_socket.recvfrom(1)
+        video_socket.close()
+        audio_socket.close()
 
         if video_data and audio_data:
             date = time.strftime("%Y%m%d-%H%M%S")
@@ -59,7 +61,7 @@ while True:
     except KeyboardInterrupt:
         try:
             while process.poll() is None:
-                process.send_signal(signal.SIGINT)
+                process.send_signal(signal.SIGTERM)
                 process.wait()
             sys.exit()
         except:
