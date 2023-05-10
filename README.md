@@ -38,7 +38,7 @@ audio_port: 5200
 # Path where the saved files will be stored
 save_path: ./
 # GStreamer pipeline
-pipeline: gst-launch-1.0 -em udpsrc port={port1} caps=application/x-rtp,media=video,encoding-name=H264,payload=96 timeout=2000000000 ! queue ! rtph264depay ! queue ! h264parse ! queue ! mp4mux name=mux ! queue ! filesink location={path}/{date}.mp4 udpsrc port={port2} caps=application/x-rtp,media=audio,encoding-name=OPUS,payload=96 timeout=2000000000 ! queue ! rtpopusdepay ! queue ! opusparse ! queue !mux.
+pipeline: gst-launch-1.0 -em udpsrc port={port1} caps=application/x-rtp,media=video,encoding-name=H264,payload=96 timeout=2000000000 ! queue ! rtph264depay ! queue ! h264parse ! queue ! mp4mux name=mux ! queue ! filesink location={path}/{date}.mp4 udpsrc port={port2} caps=application/x-rtp,media=audio,encoding-name=OPUS,payload=96 timeout=2000000000 ! queue ! rtpopusdepay ! queue ! opusparse ! queue ! mux.
 ```
 
 For the GStreamer pipeline :
