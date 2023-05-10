@@ -44,11 +44,11 @@ while True:
                 .split(),
                 stdout=subprocess.PIPE,
                 preexec_fn=os.setsid,
+                env={"LANGUAGE": "en_US.en", "LC_ALL": "en_US.UTF-8"},
             )
             while process.poll() is None:
                 output = process.stdout.readline()
                 if "GstUDPSrcTimeout" in output.decode("UTF-8"):
-                    time.sleep(2)
                     os.killpg(os.getpgid(process.pid), signal.SIGINT)
                     process.wait()
                     print(
